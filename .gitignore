@@ -78,4 +78,7 @@ gradle-app.setting
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 
+# don't save the KDE directory settings, sheesh
+.directory
+
 # End of https://www.gitignore.io/api/gradle,intellij
