@@ -29,4 +29,18 @@ public class MainTest
         assertEquals(Main.fileExistsAndIsReadable("src/test/resources/basic_test.rover"),
                      true);
     }
+
+
+    @Test
+    public void handlesBlanksAndCommentsOK() throws Exception
+    {
+        Rover rover = new Rover();
+        Main.initialiseRoverFromConfigFile("src/test/resources/basic_test.rover", rover);
+        assertEquals(rover.getExplorationZoneAsClosedInterval(), "[0,7], [0,7]");
+        assertEquals(rover.getX(), 1);
+        assertEquals(rover.getY(), 2);
+        assertEquals(rover.getHeading(), Heading.EAST);
+        assertEquals(rover.getCommandString(), "MMLMRMMRRMML");
+    }
+
 }

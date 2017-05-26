@@ -1,0 +1,12 @@
+# =====================================
+# Rover test config / instructions
+# =====================================
+
+# Initial zone bounds, width and height:
+8 8
+
+# Starting position x y and initial heading:
+1 2 E
+
+# Movement / exploration commands
+MM L M R MM RR MM L

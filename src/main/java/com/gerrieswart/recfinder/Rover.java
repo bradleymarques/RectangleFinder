@@ -252,4 +252,10 @@ public class Rover
         return String.format("%s %s %s", x, y, heading.toString().charAt(0));
     }
 
+
+    public String getCommandString()
+    {
+        return movementController.getCommands();
+    }
+
 }
