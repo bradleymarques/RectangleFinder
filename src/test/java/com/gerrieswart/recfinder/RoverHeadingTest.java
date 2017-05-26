@@ -12,14 +12,14 @@ public class RoverHeadingTest
     @Test
     public void aDefaultRoverHeadsNorth() throws Exception
     {
-        assertEquals(new Rover().getHeading(), 'N');
+        assertEquals(new Rover().getHeading(), Heading.NORTH);
     }
 
 
     @Test
     public void aDefaultRoverFacesEastAfterARightTurn() throws Exception
     {
-        assertEquals(new Rover().turnRight().getHeading(), 'E');
+        assertEquals(new Rover().turnRight().getHeading(), Heading.EAST);
     }
 
 }

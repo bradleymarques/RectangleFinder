@@ -5,4 +5,17 @@ package com.gerrieswart.recfinder;
  */
 public enum Heading
 {
+    NORTH(0), EAST(1), SOUTH(2), WEST(3);
+
+    int index;
+
+    Heading(int index)
+    {
+        this.index = index;
+    }
+
+    public int getIndex()
+    {
+        return index;
+    }
 }

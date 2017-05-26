@@ -6,10 +6,10 @@ package com.gerrieswart.recfinder;
  */
 public class Rover
 {
-    char heading = 'N';
+    Heading heading = Heading.NORTH;
 
 
-    public char getHeading()
+    public Heading getHeading()
     {
         return heading;
     }
@@ -17,7 +17,7 @@ public class Rover
 
     public Rover turnRight()
     {
-        heading = 'E';
+        this.heading = Heading.values()[(this.heading.getIndex() + 1) % 4];
         return this;
     }
 }
