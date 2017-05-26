@@ -19,15 +19,13 @@ import java.util.stream.Stream;
 public class Main
 {
 
-    private static boolean beChatty = true;
-
-    // I use the unix exit codes as defined in sysexits.h
-    // It's generally in /usr/include/sysexits.h
-
     /**
      * Exit success.
      */
     public static final int EX_OK      = 0;
+
+    // I use the unix exit codes as defined in sysexits.h
+    // It's generally in /usr/include/sysexits.h
     /**
      * Command line usage error. Probably didn't pass the
      * fully qualified filename of the rover config/instruction file.
@@ -38,23 +36,20 @@ public class Main
      * readable.
      */
     public static final int EX_NOINPUT = 66;
-
     /**
      * Internal rover error. The rover spacked out, this hopefully
      * never happens.
      */
     public static final int EX_SOFTWARE = 70;
-
     /**
      * Configuration error. The config/instruction file could not
      * be parse 100%.
      */
     public static final int EX_CONFIG = 78;
-
-
     public static final int ZONE_DEFINITION  = 1;
     public static final int INITIAL_POSITION = 2;
     public static final int COMMAND_LIST     = 3;
+    private static boolean beChatty = true;
 
 
     /**
