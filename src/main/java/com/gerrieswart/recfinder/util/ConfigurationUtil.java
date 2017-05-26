@@ -1,7 +1,9 @@
 package com.gerrieswart.recfinder.util;
 
+import com.gerrieswart.recfinder.Heading;
 import com.gerrieswart.recfinder.Rover;
 import com.gerrieswart.recfinder.exception.InvalidZoneBoundsException;
+import com.gerrieswart.recfinder.exception.OutsideZoneBoundsException;
 import com.gerrieswart.recfinder.exception.ValueAlreadyModifiedException;
 
 import java.util.Scanner;
@@ -27,5 +29,23 @@ public class ConfigurationUtil
         int height = s.nextInt();
         rover.setExplorationZoneWidth(width);
         rover.setExplorationZoneHeight(height);
+    }
+
+
+    public static void setInitialPositionAndHeading(String positionAndHeading, Rover rover)
+            throws OutsideZoneBoundsException,
+                   ValueAlreadyModifiedException
+    {
+        positionAndHeading = StringUtil.deNull(positionAndHeading).trim();
+        positionAndHeading = positionAndHeading.toUpperCase();
+        if (!positionAndHeading.matches("^\\d+\\s+\\d+\\s+[NESW]$"))
+        {
+            throw new OutsideZoneBoundsException(
+                    String.format("Couldn't understand start position and heading \"%s\"", positionAndHeading));
+        }
+        String[] params = positionAndHeading.split("\\s+");
+        rover.setStartingX(Integer.parseInt(params[0]));
+        rover.setStartingY(Integer.parseInt(params[1]));
+        rover.setStartingHeading(Heading.fromChar(params[2].charAt(0)));
     }
 }

@@ -16,6 +16,24 @@ public enum Heading
     }
 
 
+    public static Heading fromChar(char heading)
+    {
+        switch (heading)
+        {
+            case 'N':
+                return NORTH;
+            case 'E':
+                return EAST;
+            case 'S':
+                return SOUTH;
+            case 'W':
+                return WEST;
+            default:
+                return NORTH;
+        }
+    }
+
+
     public int getIndex()
     {
         return index;
