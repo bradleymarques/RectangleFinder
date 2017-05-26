@@ -10,7 +10,12 @@ An implementation of a Mars Rover for Next45.
 
 ## Wild Assumptions
 
-## Getting, building, running, and modifying it
+## Other notes
+
+I had some internal debate about the design. In the end I decided to just have the rover control it's own movement, as that allows me to not overthink it, and it's probably closer to how a real world rover would act.
+
+
+# Getting, building, running, and modifying it
 
 ### Prerequisites
 
