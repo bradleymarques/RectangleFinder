@@ -78,6 +78,9 @@ This compiles the project. Classes are in `build/classes`.
 The easy way (recommended):
 `gradle execute -Pexec.args="src/test/resources/basic_test.rover"`
 
+(or `./gradlew execute -Pexec.args="src/test/resources/basic_test.rover"` if you didn't install
+gradle and just want to use the wrapper)
+
 
 Or, the less easy way: Build it via `gradle jar`.
 
