@@ -10,15 +10,16 @@ import com.gerrieswart.recfinder.exception.ValueAlreadyModifiedException;
  */
 public class Rover
 {
-    Heading heading          = Heading.NORTH;
-    int     x                = 0;
-    boolean xIsPristine      = true;
-    int     y                = 0;
-    boolean yIsPristine      = true;
-    int     zoneWidth        = 0;
-    boolean widthIsPristine  = true;
-    int     zoneHeight       = 0;
-    boolean heightIsPristine = true;
+    Heading heading           = Heading.NORTH;
+    boolean isHeadingPristine = true;
+    int     x                 = 0;
+    boolean xIsPristine       = true;
+    int     y                 = 0;
+    boolean yIsPristine       = true;
+    int     zoneWidth         = 0;
+    boolean widthIsPristine   = true;
+    int     zoneHeight        = 0;
+    boolean heightIsPristine  = true;
 
 
     public Rover()
@@ -98,6 +99,7 @@ public class Rover
     public Rover turnRight()
     {
         this.heading = Heading.values()[(this.heading.getIndex() + 1) % 4];
+        isHeadingPristine = false;
         return this;
     }
 
@@ -106,6 +108,7 @@ public class Rover
     {
         //three right turns == 1 left
         this.heading = Heading.values()[(this.heading.getIndex() + 3) % 4];
+        isHeadingPristine = false;
         return this;
     }
 
@@ -115,7 +118,6 @@ public class Rover
                    ValueAlreadyModifiedException
 
     {
-
         if (xIsPristine)
         {
             this.x = x;
@@ -135,12 +137,6 @@ public class Rover
     }
 
 
-    private void checkYPositionWithinBounds() throws OutsideZoneBoundsException
-    {
-        checkPositionWithinBounds(y, zoneHeight, 'Y');
-    }
-
-
     private void checkPositionWithinBounds(int position, int zoneWidthOrHeight, char axis) throws OutsideZoneBoundsException
     {
         if (position < 0)
@@ -154,6 +150,15 @@ public class Rover
                     String.format("Rover's %s position (%s) cannot be beyond the exploration zone %s",
                                   axis, position, getExplorationZoneAsClosedInterval()));
         }
+    }
+
+
+    /**
+     * @return ISO 31-11 description of the exploration zone's x and y coords
+     */
+    public String getExplorationZoneAsClosedInterval()
+    {
+        return String.format("[0,%s], [0,%s]", zoneWidth - 1, zoneHeight - 1);
     }
 
 
@@ -172,6 +177,12 @@ public class Rover
         }
         checkYPositionWithinBounds();
         return this;
+    }
+
+
+    private void checkYPositionWithinBounds() throws OutsideZoneBoundsException
+    {
+        checkPositionWithinBounds(y, zoneHeight, 'Y');
     }
 
 
@@ -195,15 +206,22 @@ public class Rover
         this.y += delta[1];
         checkXPositionWithinBounds();
         checkYPositionWithinBounds();
+        xIsPristine = false;
+        yIsPristine = false;
         return this;
     }
 
 
-    /**
-     * @return ISO 31-11 description of the exploration zone's x and y coords
-     */
-    public String getExplorationZoneAsClosedInterval()
+    public Rover setStartingHeading(Heading heading) throws ValueAlreadyModifiedException
     {
-        return String.format("[0,%s], [0,%s]", zoneWidth - 1, zoneHeight - 1);
+        if (isHeadingPristine)
+        {
+            this.heading = heading;
+            isHeadingPristine = false;
+        } else
+        {
+            throw new ValueAlreadyModifiedException("Heading already modified before");
+        }
+        return this;
     }
 }
