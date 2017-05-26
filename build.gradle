@@ -1,6 +1,11 @@
 apply plugin: 'java'
+apply plugin: 'announce'
 apply plugin: 'application'
 
+sourceCompatibility = 1.8
+version = '1.0'
+
+gradle.taskGraph.addTaskExecutionListener new TaskAnnouncer(localAnnouncer: announce.local)
 
 repositories {
     jcenter()
@@ -12,3 +17,33 @@ dependencies {
 }
 
 mainClassName = 'App'
+
+// I want a popup / toast announcement when a test fails
+// you can run tests continually (rerun on every save) with the following:
+// gradle test --rerun-tasks --continuous -info
+class TaskAnnouncer implements TaskExecutionListener {
+    Announcer localAnnouncer
+
+    @Override
+    void afterExecute(final Task task, final TaskState state) {
+        String message
+        if (state.failure) {
+            message = "Failure: $state.failure.message"
+        } else if (state.executed) {
+            return
+        } else if (state.skipped) {
+            return
+        }
+        send task, message
+    }
+
+    @Override
+    void beforeExecute(final Task task) {
+        // send task, 'Ready to run'
+    }
+
+    private void send(final Task task, final String message) {
+        final String title = "Gradle build: $task.project.name:$task.name"
+        localAnnouncer.send title, message
+    }
+}
