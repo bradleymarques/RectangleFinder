@@ -245,4 +245,11 @@ public class Rover
         this.movementController.executeCommands();
         return this;
     }
+
+
+    public String getPositionAndHeading()
+    {
+        return String.format("%s %s %s", x, y, heading.toString().charAt(0));
+    }
+
 }
