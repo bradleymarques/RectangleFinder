@@ -4,14 +4,9 @@ import com.gerrieswart.recfinder.exception.InvalidZoneBoundsException;
 import com.gerrieswart.recfinder.exception.MysteriousCommandException;
 import com.gerrieswart.recfinder.exception.OutsideZoneBoundsException;
 import com.gerrieswart.recfinder.exception.ValueAlreadyModifiedException;
-import com.gerrieswart.recfinder.util.ConfigurationUtil;
-import com.gerrieswart.recfinder.util.StringUtil;
+import com.gerrieswart.recfinder.util.FileUtil;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 /**
  * Main entry point for the Rover application.
@@ -73,87 +68,14 @@ public class Main
     {
         try
         {
-            if (args.length < 1)
-            {
-                System.err.println("Usage: java Main ConfigFile<enter>" +
-                                   "\nwhere ConfigFile is the fully qualified filename of the config file.");
-                System.exit(EX_USAGE);
-            }
-
-            if ((args.length == 2) && (args[1].equals("OnlyPrintFinalPos")))
-            {
-                beChatty = false;
-            }
-
-            if (beChatty)
-            {
-                System.out.println("=====================================================");
-                System.out.println("==== RectangleFinder. Like PathFinder, only not. ====");
-                System.out.println("=====================================================");
-                System.out.println(String.format("Working Dir: '%s/'", System.getProperty("user.dir")));
-            }
-
-            String filename = args[0].trim();
-            if (!fileExistsAndIsReadable(filename))
-            {
-                System.err.println(String.format("File: '%s' does not exist or is not readable.", filename));
-                System.exit(EX_NOINPUT);
-            }
-
-            Rover spaceBeast = new Rover();
-
-            try
-            {
-                initialiseRoverFromConfigFile(filename, spaceBeast);
-            }
-            catch (IOException e)
-            {
-                System.err.println(e.getMessage());
-                System.exit(EX_NOINPUT);
-            }
-            catch (ValueAlreadyModifiedException e)
-            {
-                System.err.println(e.getMessage());
-                System.exit(EX_CONFIG);
-            }
-            catch (InvalidZoneBoundsException e)
-            {
-                System.err.println(e.getMessage());
-                System.exit(EX_CONFIG);
-            }
-            catch (OutsideZoneBoundsException e)
-            {
-                System.err.println(e.getMessage());
-                System.exit(EX_CONFIG);
-            }
-            catch (MysteriousCommandException e)
-            {
-                System.err.println(e.getMessage());
-                System.exit(EX_CONFIG);
-            }
-
-
-            try
-            {
-                if (beChatty)
-                {
-                    System.out.println("Rover ready. Into the great wide yonder!");
-                }
-                spaceBeast.explore();
-            }
-            catch (OutsideZoneBoundsException fallenIntoTheAbyss)
-            {
-                System.err.println(fallenIntoTheAbyss.getMessage());
-                System.exit(EX_CONFIG);
-            }
-
-
-            if (beChatty)
-            {
-                System.out.println("Rover finished exploring.\n");
-                System.out.println("Final position and heading:");
-            }
-            System.out.println(spaceBeast.getPositionAndHeading());
+            checkIfFilenamePassed(args);
+            checkIfVerboseIsSwitchedOff(args);
+            printPreamble();
+            String filename   = checkIfFileExists(args[0]);
+            Rover  spaceBeast = new Rover();
+            initialiseRover(filename, spaceBeast);
+            startRover(spaceBeast);
+            printFinalPosition(spaceBeast);
         }
         catch (Exception e)
         {
@@ -164,62 +86,111 @@ public class Main
     }
 
 
-    public static boolean fileExistsAndIsReadable(String fullyQualifiedFileName)
+    private static void checkIfFilenamePassed(String[] args)
     {
-        fullyQualifiedFileName = StringUtil.deNull(fullyQualifiedFileName);
-        File f = new File(fullyQualifiedFileName);
-        if (!f.exists())
+        if (args.length < 1)
         {
-            return false;
+            System.err.println("Usage: java Main ConfigFile<enter>" +
+                               "\nwhere ConfigFile is the fully qualified filename of the config file.");
+            System.exit(EX_USAGE);
         }
-        if (!f.canRead())
-        {
-            return false;
-        }
-        return true;
     }
 
 
-    public static Rover initialiseRoverFromConfigFile(String fullyQualifiedFileName, Rover rover)
-            throws IOException,
-                   ValueAlreadyModifiedException,
-                   InvalidZoneBoundsException,
-                   OutsideZoneBoundsException,
-                   MysteriousCommandException
+    private static void checkIfVerboseIsSwitchedOff(String[] args)
     {
-        Stream<String> lines = Files.lines(Paths.get(fullyQualifiedFileName));
-
-        int lineNumber = 0;
-        for (String line : (Iterable<String>) lines::iterator)
+        if ((args.length == 2) && (args[1].equals("OnlyPrintFinalPos")))
         {
-            line = StringUtil.deNull(line).trim();
-            if (!line.equals("") && line.charAt(0) != '#')
+            beChatty = false;
+        }
+    }
+
+
+    private static void printPreamble()
+    {
+        if (beChatty)
+        {
+            System.out.println("=====================================================");
+            System.out.println("==== RectangleFinder. Like PathFinder, only not. ====");
+            System.out.println("=====================================================");
+            System.out.println(String.format("Working Dir: '%s/'", System.getProperty("user.dir")));
+        }
+    }
+
+
+    private static String checkIfFileExists(String arg)
+    {
+        String filename = arg.trim();
+        if (!FileUtil.fileExistsAndIsReadable(filename))
+        {
+            System.err.println(String.format("File: '%s' does not exist or is not readable.", filename));
+            System.exit(EX_NOINPUT);
+        }
+        return filename;
+    }
+
+
+    private static void initialiseRover(String filename, Rover spaceBeast)
+    {
+        try
+        {
+            FileUtil.initialiseRoverFromConfigFile(filename, spaceBeast);
+        }
+        catch (IOException e)
+        {
+            System.err.println(e.getMessage());
+            System.exit(EX_NOINPUT);
+        }
+        catch (ValueAlreadyModifiedException e)
+        {
+            System.err.println(e.getMessage());
+            System.exit(EX_CONFIG);
+        }
+        catch (InvalidZoneBoundsException e)
+        {
+            System.err.println(e.getMessage());
+            System.exit(EX_CONFIG);
+        }
+        catch (OutsideZoneBoundsException e)
+        {
+            System.err.println(e.getMessage());
+            System.exit(EX_CONFIG);
+        }
+        catch (MysteriousCommandException e)
+        {
+            System.err.println(e.getMessage());
+            System.exit(EX_CONFIG);
+        }
+    }
+
+
+    private static void startRover(Rover spaceBeast)
+    {
+        try
+        {
+            if (beChatty)
             {
-                lineNumber++;
-                handleLine(line, lineNumber, rover);
+                System.out.println("Rover ready. Into the great wide yonder!");
             }
+            spaceBeast.explore();
         }
-        return rover;
-    }
-
-
-    private static void handleLine(String line, int lineNumber, Rover rover)
-            throws InvalidZoneBoundsException,
-                   ValueAlreadyModifiedException,
-                   OutsideZoneBoundsException,
-                   MysteriousCommandException
-    {
-        switch (lineNumber)
+        catch (OutsideZoneBoundsException fallenIntoTheAbyss)
         {
-            case ZONE_DEFINITION:
-                ConfigurationUtil.setZoneBounds(line, rover);
-                break;
-            case INITIAL_POSITION:
-                ConfigurationUtil.setInitialPositionAndHeading(line, rover);
-                break;
-            case COMMAND_LIST:
-                rover.setCommandString(line);
-                break;
+            System.err.println(fallenIntoTheAbyss.getMessage());
+            System.exit(EX_CONFIG);
         }
     }
+
+
+    private static void printFinalPosition(Rover spaceBeast)
+    {
+        if (beChatty)
+        {
+            System.out.println("Rover finished exploring.\n");
+            System.out.println("Final position and heading:");
+        }
+        System.out.println(spaceBeast.getPositionAndHeading());
+    }
+
+
 }

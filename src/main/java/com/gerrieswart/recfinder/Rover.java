@@ -233,13 +233,6 @@ public class Rover
     }
 
 
-    public Rover setCommandString(String commands) throws MysteriousCommandException
-    {
-        this.movementController.setCommands(commands);
-        return this;
-    }
-
-
     public Rover explore() throws OutsideZoneBoundsException
     {
         this.movementController.executeCommands();
@@ -256,6 +249,13 @@ public class Rover
     public String getCommandString()
     {
         return movementController.getCommands();
+    }
+
+
+    public Rover setCommandString(String commands) throws MysteriousCommandException
+    {
+        this.movementController.setCommands(commands);
+        return this;
     }
 
 }
