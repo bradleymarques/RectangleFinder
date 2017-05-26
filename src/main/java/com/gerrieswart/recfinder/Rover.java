@@ -115,7 +115,7 @@ public class Rover
                    ValueAlreadyModifiedException
 
     {
-        checkPositionWithinBounds(x, zoneWidth, 'X');
+
         if (xIsPristine)
         {
             this.x = x;
@@ -124,7 +124,20 @@ public class Rover
         {
             throw new ValueAlreadyModifiedException("X value already changed - can no longer set initial/starting position");
         }
+        checkXPositionWithinBounds();
         return this;
+    }
+
+
+    private void checkXPositionWithinBounds() throws OutsideZoneBoundsException
+    {
+        checkPositionWithinBounds(x, zoneWidth, 'X');
+    }
+
+
+    private void checkYPositionWithinBounds() throws OutsideZoneBoundsException
+    {
+        checkPositionWithinBounds(y, zoneHeight, 'Y');
     }
 
 
@@ -148,7 +161,7 @@ public class Rover
             throws OutsideZoneBoundsException,
                    ValueAlreadyModifiedException
     {
-        checkPositionWithinBounds(y, zoneHeight, 'Y');
+
         if (yIsPristine)
         {
             this.y = y;
@@ -157,7 +170,7 @@ public class Rover
         {
             throw new ValueAlreadyModifiedException("Y value already changed - can no longer set initial/starting position");
         }
-        this.y = y;
+        checkYPositionWithinBounds();
         return this;
     }
 
@@ -171,6 +184,18 @@ public class Rover
     public int getY()
     {
         return y;
+    }
+
+
+    public Rover moveForward() throws OutsideZoneBoundsException
+    {
+        int[][] deltaArray = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int[]   delta      = deltaArray[heading.getIndex()];
+        this.x += delta[0];
+        this.y += delta[1];
+        checkXPositionWithinBounds();
+        checkYPositionWithinBounds();
+        return this;
     }
 
 
