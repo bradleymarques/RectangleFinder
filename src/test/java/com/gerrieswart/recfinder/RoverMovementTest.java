@@ -34,4 +34,26 @@ public class RoverMovementTest
         assertEquals(1, rover.getX());
         assertEquals(0, rover.getY());
     }
+
+
+    @Test
+    public void aRoverWithAnInitialPositionCanMoveSouth() throws Exception
+    {
+        Rover rover = new Rover(2, 2).setStartingY(1);
+        rover.setStartingHeading(Heading.SOUTH);
+        rover.moveForward();
+        assertEquals(0, rover.getX());
+        assertEquals(0, rover.getY());
+    }
+
+
+    @Test
+    public void aRoverWithAnInitialPositionCanMoveWest() throws Exception
+    {
+        Rover rover = new Rover(2, 2).setStartingX(1);
+        rover.setStartingHeading(Heading.WEST);
+        rover.moveForward();
+        assertEquals(0, rover.getX());
+        assertEquals(0, rover.getY());
+    }
 }

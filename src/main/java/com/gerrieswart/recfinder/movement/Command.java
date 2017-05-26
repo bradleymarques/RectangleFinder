@@ -7,6 +7,6 @@ import com.gerrieswart.recfinder.Rover;
  */
 public interface Command
 {
-    public Rover execute();
+    public Rover execute() throws Exception;
 
 }

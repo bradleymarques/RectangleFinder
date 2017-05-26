@@ -1,8 +1,10 @@
 package com.gerrieswart.recfinder;
 
 import com.gerrieswart.recfinder.exception.InvalidZoneBoundsException;
+import com.gerrieswart.recfinder.exception.MysteriousCommandException;
 import com.gerrieswart.recfinder.exception.OutsideZoneBoundsException;
 import com.gerrieswart.recfinder.exception.ValueAlreadyModifiedException;
+import com.gerrieswart.recfinder.movement.Controller;
 
 /**
  * GJS
@@ -10,20 +12,23 @@ import com.gerrieswart.recfinder.exception.ValueAlreadyModifiedException;
  */
 public class Rover
 {
-    Heading heading           = Heading.NORTH;
-    boolean isHeadingPristine = true;
-    int     x                 = 0;
-    boolean xIsPristine       = true;
-    int     y                 = 0;
-    boolean yIsPristine       = true;
-    int     zoneWidth         = 0;
-    boolean widthIsPristine   = true;
-    int     zoneHeight        = 0;
-    boolean heightIsPristine  = true;
+    Heading    heading            = Heading.NORTH;
+    boolean    isHeadingPristine  = true;
+    int        x                  = 0;
+    boolean    xIsPristine        = true;
+    int        y                  = 0;
+    boolean    yIsPristine        = true;
+    int        zoneWidth          = 0;
+    boolean    widthIsPristine    = true;
+    int        zoneHeight         = 0;
+    boolean    heightIsPristine   = true;
+    Controller movementController = null;
 
 
     public Rover()
     {
+        super();
+        this.movementController = new Controller(this);
     }
 
 
@@ -31,8 +36,10 @@ public class Rover
             throws InvalidZoneBoundsException,
                    ValueAlreadyModifiedException
     {
+        super();
         this.setExplorationZoneWidth(explorationZoneWidth);
         this.setExplorationZoneHeight(explorationZoneHeight);
+        this.movementController = new Controller(this);
     }
 
 
@@ -222,6 +229,20 @@ public class Rover
         {
             throw new ValueAlreadyModifiedException("Heading already modified before");
         }
+        return this;
+    }
+
+
+    public Rover setCommandString(String commands) throws MysteriousCommandException
+    {
+        this.movementController.setCommands(commands);
+        return this;
+    }
+
+
+    public Rover explore() throws OutsideZoneBoundsException
+    {
+        this.movementController.executeCommands();
         return this;
     }
 }
