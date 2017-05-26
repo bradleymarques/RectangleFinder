@@ -75,7 +75,11 @@ This compiles the project. Classes are in `build/classes`.
 
 #### Via gradle
 
-Build it via `gradle jar`.
+The easy way (recommended):
+`gradle execute -Pexec.args="src/test/resources/basic_test.rover"`
+
+
+Or, the less easy way: Build it via `gradle jar`.
 
 Then, run it like so:
 

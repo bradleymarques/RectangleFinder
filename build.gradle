@@ -18,6 +18,7 @@ dependencies {
 
 mainClassName = 'com.gerrieswart.recfinder.Main'
 
+
 // I want a popup / toast announcement when a test fails
 // you can run tests continually (rerun on every save) with the following:
 // gradle test --rerun-tasks --continuous -info
@@ -45,5 +46,15 @@ class TaskAnnouncer implements TaskExecutionListener {
     private void send(final Task task, final String message) {
         final String title = "Gradle build: $task.project.name:$task.name"
         localAnnouncer.send title, message
+    }
+}
+
+task execute(type: JavaExec) {
+
+    main = "com.gerrieswart.recfinder.Main"
+    classpath = sourceSets.main.runtimeClasspath
+    /* Need to split the space-delimited value in the exec.args */
+    if (project.hasProperty("exec.args")) {
+        args(project.getProperty("exec.args").split())
     }
 }
