@@ -1,5 +1,6 @@
 package com.gerrieswart.recfinder;
 
+import com.gerrieswart.recfinder.exception.OutsideZoneBoundsException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -48,4 +49,19 @@ public class RoverPositionTest
         assertEquals(1, r.getX());
         assertEquals(1, r.getY());
     }
+
+
+    @Test(expected = OutsideZoneBoundsException.class)
+    public void aRoverCannotGoWestOfOrigin() throws Exception
+    {
+        new Rover().setInitialXPosition(-1);
+    }
+
+
+    @Test(expected = OutsideZoneBoundsException.class)
+    public void aRoverCannotGoSouthOfOrigin() throws Exception
+    {
+        new Rover().setInitialYPosition(-1);
+    }
+
 }
