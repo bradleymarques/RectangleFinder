@@ -21,4 +21,5 @@ public class RoverHeadingTest
     {
         assertEquals(new Rover().turnRight().getHeading(), 'E');
     }
+
 }
