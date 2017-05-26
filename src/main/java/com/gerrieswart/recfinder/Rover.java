@@ -1,8 +1,15 @@
 package com.gerrieswart.recfinder;
 
 /**
- * Created by gerrie on 2017/05/26.
+ * GJS
+ * Rover implementation
  */
 public class Rover
 {
+    char heading = 'N';
+
+    public char getHeading()
+    {
+        return heading;
+    }
 }
