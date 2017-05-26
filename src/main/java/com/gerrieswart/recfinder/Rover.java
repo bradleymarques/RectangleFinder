@@ -120,7 +120,11 @@ public class Rover
             throw new OutsideZoneBoundsException(
                     String.format("Rover's x position cannot be set to a negative value (%s)", x));
         }
-
+        if (x >= zoneWidth)
+        {
+            throw new OutsideZoneBoundsException(
+                    String.format("Rover's x position (%s) cannot be beyond the exploration zone", x));
+        }
         if (xIsPristine)
         {
             this.x = x;
@@ -141,6 +145,11 @@ public class Rover
         {
             throw new OutsideZoneBoundsException(
                     String.format("Rover's y position cannot be set to a negative value (%s)", y));
+        }
+        if (y >= zoneHeight)
+        {
+            throw new OutsideZoneBoundsException(
+                    String.format("Rover's y position (%s) cannot be beyond the exploration zone", y));
         }
         if (yIsPristine)
         {

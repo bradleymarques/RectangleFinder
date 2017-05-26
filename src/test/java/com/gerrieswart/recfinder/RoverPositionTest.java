@@ -66,6 +66,20 @@ public class RoverPositionTest
         new Rover(2, 2).setStartingY(-1);
     }
 
+    @Test(expected = OutsideZoneBoundsException.class)
+    public void aRoverCannotGoNorthOfExplorationZone() throws Exception
+    {
+        Rover rover = new Rover(2,2);
+        rover.setStartingY(2);
+    }
+
+    @Test(expected = OutsideZoneBoundsException.class)
+    public void aRoverCannotGoEastOfExplorationZone() throws Exception
+    {
+        Rover rover = new Rover(2,2);
+        rover.setStartingX(2);
+    }
+
 
     @Test(expected = ValueAlreadyModifiedException.class)
     public void aRoverCannotChangeTheStartingXPositionMoreThanOnce() throws Exception
@@ -79,7 +93,7 @@ public class RoverPositionTest
     @Test(expected = ValueAlreadyModifiedException.class)
     public void aRoverCannotChangeTheStartingYPositionMoreThanOnce() throws Exception
     {
-        new Rover()
+        new Rover(2,2)
                 .setStartingY(1)
                 .setStartingY(1);
     }
@@ -161,5 +175,7 @@ public class RoverPositionTest
         Rover rover = new Rover();
         rover.setExplorationZoneWidth(5).setExplorationZoneWidth(5);
     }
+
+
 
 }
