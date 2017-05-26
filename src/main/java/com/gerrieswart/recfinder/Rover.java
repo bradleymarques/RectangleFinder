@@ -8,9 +8,11 @@ import com.gerrieswart.recfinder.exception.OutsideZoneBoundsException;
  */
 public class Rover
 {
-    Heading heading = Heading.NORTH;
-    int     x       = 0;
-    int     y       = 0;
+    Heading heading    = Heading.NORTH;
+    int     x          = 0;
+    boolean xIsDefault = true;
+    int     y          = 0;
+    boolean yIsDefault = true;
 
 
     public Heading getHeading()
