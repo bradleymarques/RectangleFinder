@@ -9,10 +9,12 @@ public enum Heading
 
     int index;
 
+
     Heading(int index)
     {
         this.index = index;
     }
+
 
     public int getIndex()
     {

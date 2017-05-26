@@ -37,7 +37,7 @@ public class LeftTurnsTest
                 {2, Heading.SOUTH},
                 {3, Heading.EAST},
                 {4, Heading.NORTH},
-        });
+                });
     }
 
 

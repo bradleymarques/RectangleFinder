@@ -37,7 +37,7 @@ public class RightTurnsTest
                 {2, Heading.SOUTH},
                 {3, Heading.WEST},
                 {4, Heading.NORTH},
-        });
+                });
     }
 
 
