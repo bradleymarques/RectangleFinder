@@ -10,8 +10,15 @@ import static org.junit.Assert.*;
 public class RoverHeadingTest
 {
     @Test
-    public void aNewRoverHeadsNorth() throws Exception
+    public void aDefaultRoverHeadsNorth() throws Exception
     {
         assertEquals(new Rover().getHeading(), 'N');
+    }
+
+
+    @Test
+    public void aDefaultRoverFacesEastAfterARightTurn() throws Exception
+    {
+        assertEquals(new Rover().turnRight().getHeading(), 'E');
     }
 }
