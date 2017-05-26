@@ -10,7 +10,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Tests for the Rover's heading handling - right turns
+ * Tests for the Rover's heading handling - left turns
  */
 @RunWith(Parameterized.class)
 public class LeftTurnsTest
