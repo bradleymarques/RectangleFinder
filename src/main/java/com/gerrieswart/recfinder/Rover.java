@@ -115,16 +115,7 @@ public class Rover
                    ValueAlreadyModifiedException
 
     {
-        if (x < 0)
-        {
-            throw new OutsideZoneBoundsException(
-                    String.format("Rover's x position cannot be set to a negative value (%s)", x));
-        }
-        if (x >= zoneWidth)
-        {
-            throw new OutsideZoneBoundsException(
-                    String.format("Rover's x position (%s) cannot be beyond the exploration zone", x));
-        }
+        checkPositionWithinBounds(x, zoneWidth, 'X');
         if (xIsPristine)
         {
             this.x = x;
@@ -137,20 +128,27 @@ public class Rover
     }
 
 
+    private void checkPositionWithinBounds(int position, int zoneWidthOrHeight, char axis) throws OutsideZoneBoundsException
+    {
+        if (position < 0)
+        {
+            throw new OutsideZoneBoundsException(
+                    String.format("Rover's %s position cannot be set to a negative value (%s)", axis, position));
+        }
+        if (position >= zoneWidthOrHeight)
+        {
+            throw new OutsideZoneBoundsException(
+                    String.format("Rover's %s position (%s) cannot be beyond the exploration zone %s",
+                                  axis, position, getExplorationZoneAsClosedInterval()));
+        }
+    }
+
+
     public Rover setStartingY(int y)
             throws OutsideZoneBoundsException,
                    ValueAlreadyModifiedException
     {
-        if (y < 0)
-        {
-            throw new OutsideZoneBoundsException(
-                    String.format("Rover's y position cannot be set to a negative value (%s)", y));
-        }
-        if (y >= zoneHeight)
-        {
-            throw new OutsideZoneBoundsException(
-                    String.format("Rover's y position (%s) cannot be beyond the exploration zone", y));
-        }
+        checkPositionWithinBounds(y, zoneHeight, 'Y');
         if (yIsPristine)
         {
             this.y = y;
@@ -173,5 +171,14 @@ public class Rover
     public int getY()
     {
         return y;
+    }
+
+
+    /**
+     * @return ISO 31-11 description of the exploration zone's x and y coords
+     */
+    public String getExplorationZoneAsClosedInterval()
+    {
+        return String.format("[0,%s], [0,%s]", zoneWidth - 1, zoneHeight - 1);
     }
 }

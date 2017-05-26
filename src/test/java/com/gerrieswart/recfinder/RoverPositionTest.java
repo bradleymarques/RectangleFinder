@@ -70,7 +70,16 @@ public class RoverPositionTest
     public void aRoverCannotGoNorthOfExplorationZone() throws Exception
     {
         Rover rover = new Rover(2,2);
-        rover.setStartingY(2);
+        try
+        {
+            rover.setStartingY(2);
+        }
+        catch (OutsideZoneBoundsException fallenOfPlanet)
+        {
+            System.err.println(fallenOfPlanet.getMessage());
+            throw fallenOfPlanet;
+        }
+
     }
 
     @Test(expected = OutsideZoneBoundsException.class)
