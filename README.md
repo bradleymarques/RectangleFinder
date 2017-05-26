@@ -123,7 +123,7 @@ You'll notice some syserr output from the tests, like in this screenshot:
 
 That's by design, I used it while I built the rover.
 
-If (when) as test fails it's often easiest to look at gradle's report to see what exactly happened.
+If (when) a test fails it's often easiest to look at gradle's report to see what exactly happened.
 
 It's accessible via `build/reports/tests/test/index.html`
 
