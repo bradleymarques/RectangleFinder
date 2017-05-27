@@ -28,6 +28,9 @@ _"Let us change our traditional attitude to the construction of programs: Instea
 I had some internal debate about the design. In the end I decided to just have the rover control it's own movement, as that allows me to not overthink it, and it's probably closer to how a real world rover would be compartmentalised. I also guess a rover would have a movement, camera, and other assorted controllers.
 
 
+---
+
+
 # Getting it, building it, driving it, and modifying it
 
 ## Prerequisites
